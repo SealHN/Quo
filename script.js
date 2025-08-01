@@ -1,3 +1,17 @@
+// 全局错误捕获
+window.onerror = function(msg, url, line) {
+  alert(`错误: ${msg}\n行号: ${line}`);
+};
+
+// 检查所有按钮
+const checkButtons = () => {
+  const btn = document.getElementById('submitQuestion');
+  console.log("按钮状态：", btn);
+  btn.onclick = () => alert('测试事件已绑定');
+};
+
+// 每3秒检查一次
+setInterval(checkButtons, 3000);
 // 配置
 const REPO_OWNER = 'SealHN';
 const REPO_NAME = 'Quo';
