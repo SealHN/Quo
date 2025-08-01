@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SealHN的匿名提问箱</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="./b.png" alt="SealHN的头像" class="avatar">
+            <div class="header-text">
+                <h1>SealHN的匿名提问箱</h1>
+                <p>写一下叭，嘻嘻</p>
+            </div>
+            <button id="secretBtn" class="secret-btn"></button>
+        </header>
+
+        <div class="question-form">
+            <textarea id="questionInput" placeholder="在这里输入你的问题..."></textarea>
+            <button id="submitQuestion">提交问题</button>
+            <p class="hint">问题将完全匿名，请文明提问~</p>
+        </div>
+
+        <div class="questions-container">
+            <h2>大家的提问</h2>
+            <div id="questionsList" class="questions-list"></div>
+            <div class="pagination">
+                <button id="prevPage">上一页</button>
+                <span id="pageInfo">第1页</span>
+                <button id="nextPage">下一页</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 彩蛋弹窗 -->
+    <div id="secretModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>彩蛋输入区</h2>
+            <input type="password" id="secretInput" placeholder="输入神秘代码...">
+            <button id="submitSecret">提交</button>
+            <p id="secretMessage" class="message"></p>
+        </div>
+    </div>
+
+    <!-- 管理员弹窗 -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content admin">
+            <span class="close">&times;</span>
+            <h2>管理员模式</h2>
+            <div id="adminQuestionsList" class="admin-questions-list"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+              </html>
