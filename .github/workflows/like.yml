@@ -1,0 +1,44 @@
+name: Process Like
+
+on:
+  repository_dispatch:
+    types: [like_question]
+
+jobs:
+  process-like:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Update like count
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          ISSUE_NUMBER=${{ github.event.client_payload.issue_number }}
+          CURRENT_LABELS=$(curl -s \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER | jq -r '.labels[].name')
+          
+          LIKE_LABEL=$(echo "$CURRENT_LABELS" | grep -E '^likes-[0-9]+$' || echo "likes-0")
+          LIKE_COUNT=$(echo "$LIKE_LABEL" | cut -d'-' -f2)
+          NEW_COUNT=$((LIKE_COUNT + 1))
+          NEW_LABEL="likes-$NEW_COUNT"
+          
+          # Remove old like label if exists
+          if [[ "$LIKE_LABEL" != "" ]]; then
+            curl -X DELETE \
+              -H "Authorization: token $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels/$LIKE_LABEL
+          fi
+          
+          # Add new like label
+          curl -X POST \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+            -d '{
+              "labels": ["'$NEW_LABEL'"]
+            }'
